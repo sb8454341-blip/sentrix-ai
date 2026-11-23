@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0A1122">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<title>SENTRIX AI — Cyberdéfense intelligente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A1122;--panel:#131D33;--line:#24324F;--text:#EAF0FA;--mute:#97A9C6;--acc:#2F6BFF;--ok:#2DE0C0;--warn:#F5C242;--bad:#F0615A;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#F3F5F9;--panel:#fff;--line:#D8DFEA;--text:#0F1B2D;--mute:#51647F;--acc:#B88700;--ok:#12844A;--warn:#A06A00;--bad:#C0332C;color-scheme:light}}
+:root[data-theme="light"]{--bg:#F3F5F9;--panel:#fff;--line:#D8DFEA;--text:#0F1B2D;--mute:#51647F;--acc:#B88700;--ok:#12844A;--warn:#A06A00;--bad:#C0332C;color-scheme:light}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 "IBM Plex Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque","IBM Plex Sans",sans-serif;margin:0;letter-spacing:-.01em}
+header{display:flex;align-items:center;gap:14px;padding:16px 18px 12px;max-width:1100px;margin:0 auto}
+header svg{width:52px;height:52px;flex:none}
+.brand h1{font-size:26px;font-weight:800;letter-spacing:.04em}
+.brand p{margin:0;color:var(--mute);font-size:13px}
+.live{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ok)}
+.live i{width:9px;height:9px;border-radius:50%;background:var(--ok);animation:p 1.6s infinite}
+@keyframes p{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.live i{animation:none}}
+.flag{height:3px;background:linear-gradient(90deg,#CE1126 33%,#FCD116 33% 66%,#009460 66%)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:12px 18px;max-width:1100px;margin:0 auto}
+nav button{flex:none;border:1px solid var(--line);background:transparent;color:var(--mute);padding:8px 14px;border-radius:999px;font:inherit;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--acc);border-color:var(--acc);color:#14213A;font-weight:600}
+button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+main{max-width:1100px;margin:0 auto;padding:6px 18px 30px}
+section{display:none}section.on{display:block}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+.box h2{font-size:17px;margin-bottom:10px}
+.score{display:flex;align-items:center;gap:16px}
+.score svg{width:120px;height:120px;flex:none}
+.big{font:800 30px "Bricolage Grotesque",sans-serif}
+.mute{color:var(--mute);font-size:13px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stats div{border-left:3px solid var(--line);padding-left:10px}
+.stats b{display:block;font:800 24px "Bricolage Grotesque",sans-serif}
+.feed{list-style:none;margin:0;padding:0;max-height:320px;overflow:auto}
+.feed li{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--line);cursor:pointer}
+.feed li:first-child{border-top:0}
+.dot{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:none}
+.high{background:var(--bad)}.med{background:var(--warn)}.low{background:var(--ok)}
+.tag{font-size:12px;border:1px solid currentColor;border-radius:999px;padding:1px 8px;white-space:nowrap}
+.t-high{color:var(--bad)}.t-med{color:var(--warn)}.t-low{color:var(--ok)}
+.split{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:800px){.split{grid-template-columns:1fr 1fr}}
+.btn{background:var(--acc);color:#14213A;border:0;border-radius:8px;padding:9px 16px;font:600 14px inherit;font-family:inherit;cursor:pointer}
+.btn.alt{background:transparent;color:var(--text);border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 6px;border-top:1px solid var(--line)}
+th{color:var(--mute);font-weight:500;border-top:0}
+.wrap{overflow-x:auto}
+.bar{height:6px;background:var(--line);border-radius:4px;min-width:80px}
+.bar i{display:block;height:100%;border-radius:4px;background:var(--ok)}
+.drop{display:block;border:2px dashed var(--line);border-radius:10px;padding:22px;text-align:center;color:var(--mute);cursor:pointer}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:12px 0 0;font-size:14px}
+dt{color:var(--mute)}dd{margin:0;word-break:break-all}
+pre{white-space:pre-wrap;font:13px/1.6 "IBM Plex Sans",sans-serif;margin:0}
+footer{text-align:center;color:var(--mute);font-size:13px;padding:10px 18px 24px}
+footer b{color:var(--acc)}
+header{flex-wrap:wrap}
+.chat{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow:auto;margin-bottom:10px}
+.msg{background:var(--bg);border:1px solid var(--line);border-radius:12px 12px 12px 3px;padding:9px 12px;white-space:pre-line;max-width:92%}
+.msg.me{align-self:flex-end;background:var(--acc);color:#14213A;border-color:var(--acc);border-radius:12px 12px 3px 12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chips button{font-size:13px;padding:6px 12px}
+.ask{display:flex;gap:8px}
+.ask input{flex:1;min-width:0;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font:inherit}
+dialog{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:12px;max-width:420px}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+.verdict{display:flex;gap:14px;align-items:flex-start}
+.verdict .ic{width:54px;height:54px;border-radius:50%;flex:none;display:grid;place-items:center;font:800 28px "Bricolage Grotesque",sans-serif;color:#10202F}
+.verdict h2{font-size:22px;margin-bottom:2px}
+.verdict ul{margin:8px 0 0;padding-left:18px}
+.v-ok{border-color:var(--ok)}.v-w{border-color:var(--warn)}.v-bad{border-color:var(--bad)}
+.act{margin-left:auto;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.sm{padding:5px 10px;font-size:13px}
+.chk label{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--line);cursor:pointer}
+.chk input{width:20px;height:20px;flex:none;accent-color:var(--acc)}
+dialog label{display:block;margin:10px 0 4px;color:var(--mute);font-size:13px}
+dialog input,dialog select{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font:inherit}
+@media(max-width:520px){table{font-size:13px}th,td{padding:8px 4px}}
+@media print{header,nav,.flag,.noprint,footer .demo{display:none}body{background:#fff;color:#000}.box{border:0}}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.row input,.row select{flex:1 1 140px;min-width:0;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:9px 10px;font:inherit}
+.ck{display:flex;gap:10px;align-items:flex-start;padding:7px 0;font-size:14px}
+.ck input{margin-top:3px;width:18px;height:18px;flex:none}
+.v{font:800 28px "Bricolage Grotesque",sans-serif;margin-bottom:4px}
+.feed li{align-items:center;flex-wrap:wrap}
+.feed li .btn{padding:6px 10px;font-size:13px;margin-left:6px}
+details summary{cursor:pointer;color:var(--mute);padding:6px 0}
+details div{padding:5px 0}
+.btn{color:#fff}
+nav{position:fixed;left:0;right:0;bottom:0;max-width:none;margin:0;display:flex;justify-content:space-around;gap:0;overflow:visible;padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px));background:var(--panel);border-top:1px solid var(--line);z-index:20}
+nav button{flex:1;border:0;background:transparent;color:var(--mute);border-radius:10px;padding:4px 2px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px}
+nav button[aria-selected="true"]{background:transparent;color:var(--ok);font-weight:600}
+main{padding-bottom:100px}
+footer{padding-bottom:96px}
+.sec-t{color:var(--mute);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:13px;text-align:center;margin:22px 0 10px}
+.hero{text-align:center;padding:16px 12px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,rgba(47,107,255,.16),transparent)}
+.h-t{font:800 34px "Bricolage Grotesque",sans-serif;letter-spacing:.02em}
+.h-s{font-size:14px}.h-s.mute{color:var(--mute);font-size:13px}
+.h-p{margin-top:8px;font-weight:600}
+.rc{display:flex;align-items:center;gap:12px;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;color:var(--text);font:inherit;text-align:left;cursor:pointer}
+.ri{color:var(--acc);display:flex}.rn{font-weight:600;flex:1}
+.pill{border-radius:999px;padding:6px 14px;font-weight:600;font-size:13px;white-space:nowrap}
+.pill-b{background:var(--acc);color:#fff}.pill-ok{background:rgba(45,224,192,.16);color:var(--ok)}.pill-w{background:rgba(245,194,66,.18);color:var(--warn)}.pill-r{background:rgba(240,97,90,.18);color:var(--bad)}.pill-g{background:var(--line);color:var(--mute)}
+.stat2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+.sc b{display:block;font:800 40px "Bricolage Grotesque",sans-serif}.sc span{display:block}.sc i{font-style:normal;font-size:13px}
+.ai{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;font-weight:800;color:#fff;flex:none}
+.ai-r{background:#C9453F}.ai-b{background:#2F6BFF}
+.big{width:100%;margin-top:16px;padding:16px;font-size:15px;letter-spacing:.04em;background:var(--acc);color:#fff;border:0;border-radius:12px;font-weight:700;cursor:pointer}
+.big:disabled{opacity:.7}
+.back{margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<header>
+<svg viewBox="0 0 64 64" role="img" aria-label="Logo SENTRIX AI">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1D3C6B"/><stop offset="1" stop-color="#0A1830"/></linearGradient>
+<linearGradient id="o" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE08A"/><stop offset="1" stop-color="#E9A91A"/></linearGradient></defs>
+<path d="M32 3 56 12v20c0 14-10 24-24 29C18 56 8 46 8 32V12Z" fill="url(#g)" stroke="url(#o)" stroke-width="2.5"/>
+<path d="M43 22c0-6-21-8-21 3 0 9 21 6 21 16 0 9-21 8-21 1" fill="none" stroke="url(#o)" stroke-width="4.5" stroke-linecap="round"/>
+<circle cx="43" cy="22" r="3" fill="#FFE08A"/><circle cx="22" cy="42" r="3" fill="#FFE08A"/>
+<path d="M32 3v6M8 32h5M51 32h5" stroke="#FFE08A" stroke-width="1.5" opacity=".6"/>
+</svg>
+<div class="brand"><h1>SENTRIX AI</h1><p>Intelligent Cyber Defense System</p></div>
+<button class="btn" id="inst">Installer l’app</button>
+</header>
+<nav role="tablist" id="tabs"></nav>
+<main>
+<section id="s-dash" class="on">
+<div class="mute" id="scanmsg" style="text-align:center;min-height:22px"></div>
+<div class="hero" id="hero"></div>
+<div class="sec-t">Problèmes détectés</div>
+<ul class="feed" id="probs"></ul>
+<div class="sec-t">Protection en direct</div>
+<div id="live"></div>
+<div class="sec-t">Bilan du jour</div>
+<div class="stat2" id="stats"></div>
+<div class="sec-t">Activité récente</div>
+<ul class="feed" id="recent"></ul>
+<button class="big" id="scanbtn">LANCER L’ANALYSE COMPLÈTE</button>
+</section>
+<section id="s-ai"><div class="box"><h2>Analyste IA</h2><p class="mute">Je vous explique en mots simples ce qui se passe.</p><div class="chips" id="chips"></div><div class="chat" id="chat" aria-live="polite"></div><div class="ask"><input id="q" placeholder="Posez votre question…" aria-label="Votre question"><button class="btn" id="send">Envoyer</button></div></div></section>
+<section id="s-sys">
+<button class="btn alt back" data-go="dash">← Accueil</button>
+<div class="box"><h2>Contrôle du téléphone</h2><div id="chk"></div><p><button class="btn" id="chkok">Vérifier maintenant</button></p></div>
+<div class="box" style="margin-top:14px"><h2>Cet appareil</h2><pre id="devinfo" class="mute"></pre></div>
+<div style="margin-top:14px"><div class="box"><h2>Applications à vérifier</h2>
+<p class="mute">Un site web ne peut pas lister vos applications. Ajoutez celles qui vous semblent douteuses : SENTRIX évalue le risque.</p>
+<div class="row"><input id="an" placeholder="Nom de l’application" aria-label="Nom de l’application"><select id="as" aria-label="Origine"><option value="store">Google Play ou App Store</option><option value="ext">Fichier APK ou site externe</option></select></div>
+<label class="ck"><input type="checkbox" id="p-sms"><span>Lit mes SMS</span></label>
+<label class="ck"><input type="checkbox" id="p-acc"><span>Utilise le service d’accessibilité</span></label>
+<label class="ck"><input type="checkbox" id="p-adm"><span>Administrateur de l’appareil</span></label>
+<label class="ck"><input type="checkbox" id="p-ovl"><span>S’affiche par-dessus les autres apps</span></label>
+<label class="ck"><input type="checkbox" id="p-odd"><span>Demande des permissions sans rapport avec son rôle</span></label>
+<p><button class="btn" id="aadd">Évaluer et ajouter</button></p>
+<ul class="feed" id="al"></ul></div></div>
+</section>
+<section id="s-net">
+<button class="btn alt back" data-go="dash">← Accueil</button>
+
+<div class="box"><h2>Connexion actuelle</h2><p class="mute" id="net"></p></div>
+<div class="box" style="margin-top:14px"><h2>Mes routeurs Wi-Fi</h2>
+<p class="mute">Pour la sécurité du réseau : Paramètres, Connexions, Wi-Fi, roue dentée du réseau.</p>
+<div class="row"><input id="wn" placeholder="Nom du Wi-Fi" aria-label="Nom du Wi-Fi"><select id="ws" aria-label="Sécurité"><option value="wpa3">WPA3</option><option value="wpa2" selected>WPA2</option><option value="wpa">WPA (ancien)</option><option value="wep">WEP</option><option value="open">Ouvert, sans mot de passe</option><option value="unk">Je ne sais pas</option></select></div>
+<label class="ck"><input type="checkbox" id="wa"><span>J’ai changé le mot de passe d’administration de la box</span></label>
+<label class="ck"><input type="checkbox" id="ww"><span>Le WPS est désactivé</span></label>
+<label class="ck"><input type="checkbox" id="wu"><span>La box est à jour</span></label>
+<p><button class="btn" id="wadd">Ajouter ce routeur</button></p>
+<ul class="feed" id="wl"></ul></div>
+<div style="margin-top:14px"><div class="box"><h2>Appareils sur mon Wi-Fi</h2>
+<p class="mute">Ouvrez la liste des appareils connectés de votre box (souvent 192.168.1.1) et ajoutez ici ceux que vous voyez. Ceux que vous ne reconnaissez pas sont mis en avant.</p>
+<div class="row"><input id="dn" placeholder="Nom de l’appareil" aria-label="Nom de l’appareil"><input id="di" placeholder="Adresse IP ou MAC (facultatif)" aria-label="Adresse"><select id="dk" aria-label="Reconnu ?"><option value="0">Je ne le reconnais pas</option><option value="1">Je le reconnais</option></select><button class="btn" id="da">Ajouter</button></div>
+<ul class="feed" id="dl"></ul></div></div>
+</section>
+<section id="s-thr">
+<div class="box"><h2>Menaces détectées</h2><ul class="feed" id="thl"></ul></div>
+<div class="box" style="margin-top:14px"><h2>Actions recommandées</h2><ul class="feed" id="todo"></ul><p><button class="btn alt" id="gosys">Lancer l’analyse complète</button></p></div>
+<div class="box" style="margin-top:14px"><h2>Règles de détection</h2><div class="wrap" id="rules"></div></div>
+</section>
+<section id="s-file">
+<button class="btn alt back" data-go="dash">← Accueil</button><div class="box"><h2>Analyse sécurisée d’un fichier</h2>
+<label class="drop" for="f">Touchez pour choisir un fichier à vérifier<br><span class="mute">Il reste sur votre appareil : il est lu, jamais ouvert ni exécuté, jamais envoyé.</span></label>
+<input id="f" type="file" hidden><div id="fout"></div></div></section>
+<section id="s-rep"><div class="box"><h2>Rapport de sécurité</h2>
+<p class="noprint"><button class="btn" id="gen">Générer le rapport</button> <button class="btn alt" id="prt">Imprimer / PDF</button></p>
+<pre id="rout" class="mute">Aucun rapport pour l’instant.</pre>
+<h3 style="margin:16px 0 6px">Chronologie</h3><ul class="feed" id="tl"></ul></div></section>
+<section id="s-set">
+<div class="box"><h2>Sources de données</h2><p class="mute">Les appareils, routeurs et applications sont saisis par vous. Ils sont enregistrés sur ce téléphone et sauvegardés en ligne (Firebase) pour les retrouver.</p><p class="mute" id="cloud">Sauvegarde en ligne : connexion…</p></div>
+<div class="box" style="margin-top:14px"><h2>Comptes et permissions</h2><p class="mute">Compte : aucune connexion pour l’instant.<br>Permissions demandées par l’application : aucune (pas d’accès aux messages, appels, photos ni autres applications).</p></div>
+<div class="box" style="margin-top:14px"><h2>Apparence</h2><div class="row"><select id="th" aria-label="Thème"><option value="dark">Sombre</option><option value="light">Clair</option></select></div></div>
+<div class="box" style="margin-top:14px"><h2>Mes données</h2><p><button class="btn alt" id="exp">Copier mes données</button> <button class="btn alt" id="wipe">Tout effacer</button></p><p class="mute" id="setmsg"></p></div>
+<p class="mute" style="text-align:center">SENTRIX AI · version 1.0</p>
+</section>
+</main>
+<dialog id="dlg"><h3>Installer SENTRIX AI</h3><p><b>Android (Chrome)</b> : ouvrez cette page dans Chrome, touchez le menu ⋮ puis « Ajouter à l’écran d’accueil » ou « Installer l’application ».</p><p><b>iPhone (Safari)</b> : touchez Partager, puis « Sur l’écran d’accueil ».</p><p class="mute">L’icône SENTRIX AI apparaîtra comme une vraie application.</p><button class="btn" id="cl">Fermer</button></dialog>
+<footer><b>SENTRIX AI</b> · Conçu et développé par <b>Mamadou Samba Baldé</b><br><span class="demo">Vos informations restent sur votre téléphone.</span></footer>
+<script>
+const $=s=>document.querySelector(s);
+const TABS=[["dash","Accueil",'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>'],["thr","Menaces",'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M12 8v5"/><path d="M12 16.5v.5"/>'],["ai","Assistant",'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8"/>'],["rep","Rapports",'<path d="M5 20V10"/><path d="M12 20V4"/><path d="M19 20v-7"/>'],["set","Paramètres",'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>']];
+const sv=p=>`<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const ICO={sys:'<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/>',net:'<path d="M2 9a15 15 0 0 1 20 0"/><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M12 20v.5"/>',thr:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',file:'<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/>'};
+const tabs=$("#tabs");
+TABS.forEach(([id,l,ic],i)=>{const b=document.createElement("button");b.innerHTML=sv(ic)+"<span>"+l+"</span>";b.setAttribute("role","tab");b.setAttribute("aria-selected",i==0);b.onclick=()=>show(id);b.dataset.t=id;tabs.append(b)});
+function show(id){document.querySelectorAll("section").forEach(x=>x.classList.toggle("on",x.id=="s-"+id));tabs.querySelectorAll("button").forEach(b=>b.setAttribute("aria-selected",b.dataset.t==id));scrollTo(0,0)}
+let S={devs:[],routers:[],apps:[],chk:{},done:false,log:[],theme:"dark"};
+const logEv=x=>{S.log.unshift({t:new Date().toLocaleString("fr-FR"),x});S.log=S.log.slice(0,60)};
+const applyTheme=()=>{document.documentElement.setAttribute("data-theme",S.theme=="light"?"light":"dark")};
+try{Object.assign(S,JSON.parse(localStorage.getItem("sx2")||"{}"))}catch(e){}
+const store=()=>{S.ts=Date.now();try{localStorage.setItem("sx2",JSON.stringify(S))}catch(e){}if(window.sxPush)window.sxPush()};
+const save=()=>{store();render()};
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const CHK=[["lock","Mon écran est verrouillé (code, schéma ou empreinte)",3,"Activez un verrouillage d’écran (code ou empreinte)."],["upd","Mon téléphone et mes applications sont à jour",2,"Installez les mises à jour du système et des applications."],["prot","Google Play Protect est activé",2,"Activez Play Protect dans le Play Store."],["store","J’installe mes applications seulement depuis une boutique officielle",3,"Désinstallez les applications venues d’ailleurs que d’une boutique officielle."],["twofa","La double authentification est activée sur mes comptes importants",2,"Activez la double authentification (WhatsApp, e-mail, mobile money)."]];
+const SHORT={lock:"verrouillage d’écran",upd:"mises à jour",prot:"Play Protect",store:"origine des applications",twofa:"double authentification"};
+const PERMS=[["sms","Lit mes SMS",2],["acc","Utilise le service d’accessibilité",3],["adm","Administrateur de l’appareil",3],["ovl","S’affiche par-dessus les autres apps",2],["odd","Permissions sans rapport avec son rôle",2]];
+const SECW={wpa3:0,wpa2:1,wpa:3,wep:5,open:5,unk:2},SECN={wpa3:"WPA3",wpa2:"WPA2",wpa:"WPA (ancien)",wep:"WEP (très faible)",open:"Ouvert, sans mot de passe",unk:"Sécurité inconnue"};
+const appWhy=a=>{const w=[];if(a.src=="ext")w.push("installée hors boutique officielle");PERMS.forEach(p=>{if(a.p.includes(p[0]))w.push(p[1].toLowerCase())});return w};
+const appRisk=a=>(a.src=="ext"?3:0)+PERMS.reduce((n,p)=>n+(a.p.includes(p[0])?p[2]:0),0);
+const rtRisk=r=>SECW[r.sec]+(r.adm?0:2)+(r.wps?0:1)+(r.upd?0:1);
+const rtWhy=r=>{const w=[];if(SECW[r.sec]>=3)w.push("chiffrement faible ou absent");if(!r.adm)w.push("mot de passe d’administration non changé");if(!r.wps)w.push("WPS actif");if(!r.upd)w.push("box pas à jour");return w};
+const lvl=n=>n>=4?"danger":n>=2?"doubt":"ok";
+function calc(){
+const ad=S.apps.filter(a=>lvl(appRisk(a))=="danger"),av=S.apps.filter(a=>lvl(appRisk(a))=="doubt"),ud=S.devs.filter(d=>!d.known),rd=S.routers.filter(r=>lvl(rtRisk(r))=="danger"),rv=S.routers.filter(r=>lvl(rtRisk(r))=="doubt"),miss=CHK.filter(c=>!S.chk[c[0]]);
+const risk=ad.length*4+av.length+ud.length*3+rd.length*4+rv.length+(S.done?miss.reduce((n,c)=>n+c[2],0):0);
+const todo=[];
+ad.forEach(a=>todo.push("Désinstallez « "+a.n+" »."));
+ud.forEach(d=>todo.push("Changez le mot de passe Wi-Fi : « "+d.n+" » est inconnu."));
+rd.concat(rv).forEach(r=>todo.push("Renforcez la box « "+r.n+" » : "+rtWhy(r).join(", ")+"."));
+av.forEach(a=>todo.push("Vérifiez l’application « "+a.n+" »."));
+if(S.done)miss.forEach(c=>todo.push(c[3]));
+const level=risk>=8?"bad":risk>=3?"watch":S.done?"ok":"todo";
+const T={bad:["Téléphone en danger","Plusieurs risques sérieux ont été trouvés. Corrigez-les dans l’ordre."],watch:["À surveiller","Quelques points sont à corriger pour être vraiment tranquille."],ok:["Votre téléphone est en sécurité","Aucun risque trouvé dans ce que vous avez renseigné."],todo:["Analyse à lancer","Lancez l’analyse complète pour voir votre niveau de protection."]}[level];
+return{level,title:T[0],sub:T[1],ad,av,ud,rd,rv,miss,todo,risk,pct:S.done?Math.max(0,100-risk*5):null}}
+function render(){
+const v=calc(),col={bad:"var(--bad)",watch:"var(--warn)",ok:"var(--ok)",todo:"var(--mute)"}[v.level];
+
+$("#todo").innerHTML=v.todo.length?v.todo.map(t=>`<li><span class="dot med"></span><div>${esc(t)}</div></li>`).join(""):'<li class="mute">Rien à corriger.</li>';
+$("#chk").innerHTML=CHK.map(c=>`<label class="ck"><input type="checkbox" data-c="${c[0]}" ${S.chk[c[0]]?"checked":""}><span>${c[1]}</span></label>`).join("");
+const D=S.devs.map((d,i)=>({d,i})),U=D.filter(x=>!x.d.known),K=D.filter(x=>x.d.known);
+$("#dl").innerHTML=(U.length?U.map(x=>`<li><span class="dot high"></span><div><b>${esc(x.d.n)}</b><div class="mute">${esc(x.d.a||"adresse non notée")} · Inconnu</div></div><span style="margin-left:auto"><button class="btn alt" data-a="dk" data-i="${x.i}">C’est le mien</button><button class="btn alt" data-a="dd" data-i="${x.i}">Retirer</button></span></li>`).join(""):'<li class="mute">Aucun appareil inconnu.</li>')+(K.length?`<li><details><summary>${K.length} appareil(s) reconnu(s)</summary>${K.map(x=>`<div class="mute">${esc(x.d.n)} ${esc(x.d.a||"")} <button class="btn alt" data-a="dd" data-i="${x.i}">Retirer</button></div>`).join("")}</details></li>`:"");
+const A=S.apps.map((a,i)=>({a,i,r:appRisk(a)})),B=A.filter(x=>x.r>=2).sort((p,q)=>q.r-p.r),G=A.filter(x=>x.r<2);
+$("#al").innerHTML=(B.length?B.map(x=>`<li><span class="dot ${x.r>=4?"high":"med"}"></span><div><b>${esc(x.a.n)}</b><div class="mute">${appWhy(x.a).join(", ")}</div></div><span class="tag ${x.r>=4?"t-high":"t-med"}" style="margin-left:auto">${x.r>=4?"Dangereuse":"À vérifier"}</span><button class="btn alt" data-a="ad" data-i="${x.i}">Retirer</button></li>`).join(""):'<li class="mute">Aucune application dangereuse.</li>')+(G.length?`<li><details><summary>${G.length} application(s) sans alerte</summary>${G.map(x=>`<div class="mute">${esc(x.a.n)} <button class="btn alt" data-a="ad" data-i="${x.i}">Retirer</button></div>`).join("")}</details></li>`:"");
+$("#wl").innerHTML=S.routers.length?S.routers.map((r,i)=>{const L=lvl(rtRisk(r)),w=rtWhy(r),c=L=="danger"?"high":L=="doubt"?"med":"low";return `<li><span class="dot ${c}"></span><div><b>${esc(r.n)}</b><div class="mute">${SECN[r.sec]}${w.length?" · "+w.join(", "):" · aucun problème"}</div></div><span class="tag t-${c}" style="margin-left:auto">${L=="ok"?"Sécurisé":"À risque"}</span><button class="btn alt" data-a="wd" data-i="${i}">Retirer</button></li>`}).join(""):'<li class="mute">Aucun routeur ajouté.</li>';
+const n=navigator.connection||{},ty={wifi:"Wi-Fi",cellular:"données mobiles",ethernet:"câble",none:"aucune"}[n.type];
+$("#net").textContent=(navigator.onLine?"Internet : connecté. ":"Internet : coupé. ")+(ty?"Connexion : "+ty+". ":"")+"Une page web ne peut pas lire le nom du Wi-Fi ni scanner le réseau : ajoutez vos routeurs et vos appareils vous-même.";renderMore(v)}
+function renderMore(v){
+$("#gosys").hidden=S.done;
+const T=[];v.ad.forEach(a=>T.push([1,"Application dangereuse : "+a.n,appWhy(a).join(", ")]));v.ud.forEach(d=>T.push([1,"Appareil inconnu : "+d.n,"à bloquer en changeant le mot de passe Wi-Fi"]));v.rd.forEach(r=>T.push([1,"Routeur à risque : "+r.n,rtWhy(r).join(", ")]));v.rv.forEach(r=>T.push([0,"Routeur à renforcer : "+r.n,rtWhy(r).join(", ")]));v.av.forEach(a=>T.push([0,"Application à vérifier : "+a.n,appWhy(a).join(", ")]));if(S.done)v.miss.forEach(c=>T.push([c[2]>=3?1:0,"Non confirmé : "+SHORT[c[0]],c[3]]));
+$("#thl").innerHTML=T.length?T.sort((a,b)=>b[0]-a[0]).map(t=>`<li><span class="dot ${t[0]?"high":"med"}"></span><div><b>${esc(t[1])}</b><div class="mute">${esc(t[2])}</div></div><span class="tag ${t[0]?"t-high":"t-med"}" style="margin-left:auto">${t[0]?"Critique":"Moyen"}</span></li>`).join(""):`<li class="mute">${S.done?"Aucune menace détectée.":"Lancez l’analyse complète pour détecter les problèmes."}</li>`;
+$("#rules").innerHTML="<table><thead><tr><th>Règle</th><th>Risque</th></tr></thead><tbody>"+[["Application hors boutique officielle","+3"],["Permission sensible (SMS, accessibilité, administrateur…)","+2 à +3"],["Appareil inconnu sur le Wi-Fi","+3 chacun"],["Wi-Fi ouvert ou WEP","+5"],["Mot de passe de la box non changé","+2"],["WPS actif ou box pas à jour","+1 chacun"],["Point de contrôle manquant","+2 à +3"],["3 et plus : à surveiller · 8 et plus : en danger",""]].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")+"</tbody></table>";
+$("#tl").innerHTML=S.log.length?S.log.slice(0,20).map(l=>`<li><div><b>${esc(l.x)}</b><div class="mute">${l.t}</div></div></li>`).join(""):'<li class="mute">Aucun événement enregistré.</li>';renderHome(v,T.filter(t=>t[0]).length,T.filter(t=>!t[0]).length,T)}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b)return;const k=b.dataset.a,i=+b.dataset.i;if(k=="dk"){logEv("Appareil reconnu : "+S.devs[i].n);S.devs[i].known=true}else if(k=="dd"){logEv("Appareil retiré : "+S.devs[i].n);S.devs.splice(i,1)}else if(k=="ad"){logEv("Application retirée : "+S.apps[i].n);S.apps.splice(i,1)}else if(k=="wd"){logEv("Routeur retiré : "+S.routers[i].n);S.routers.splice(i,1)}save()});
+document.addEventListener("change",e=>{const c=e.target.dataset&&e.target.dataset.c;if(c){S.chk[c]=e.target.checked;if(S.done)save();else store()}});
+$("#chkok").onclick=()=>runScan();
+$("#da").onclick=()=>{const n=$("#dn").value.trim();if(!n)return;S.devs.push({n,a:$("#di").value.trim(),known:$("#dk").value=="1"});logEv(($("#dk").value=="1"?"Appareil ajouté : ":"Appareil inconnu signalé : ")+n);$("#dn").value=$("#di").value="";save()};
+$("#wadd").onclick=()=>{const n=$("#wn").value.trim();if(!n)return;S.routers.push({n,sec:$("#ws").value,adm:$("#wa").checked,wps:$("#ww").checked,upd:$("#wu").checked});logEv("Routeur ajouté : "+n);$("#wn").value="";save()};
+$("#aadd").onclick=()=>{const n=$("#an").value.trim();if(!n)return;S.apps.push({n,src:$("#as").value,p:PERMS.filter(p=>$("#p-"+p[0]).checked).map(p=>p[0])});logEv("Application évaluée : "+n);$("#an").value="";PERMS.forEach(p=>{$("#p-"+p[0]).checked=false});save()};
+$("#gen").onclick=()=>{const v=calc();$("#rout").className="";$("#rout").textContent="RAPPORT DE SÉCURITÉ — SENTRIX AI\nGénéré le "+new Date().toLocaleString("fr-FR")+"\nPréparé pour : Mamadou Samba Baldé\n\nVerdict : "+v.title+(v.pct==null?"":" ("+v.pct+" % de protection)")+"\n\nApplications dangereuses : "+(v.ad.map(a=>a.n).join(", ")||"aucune")+"\nAppareils inconnus : "+(v.ud.map(d=>d.n).join(", ")||"aucun")+"\nRouteurs à risque : "+(v.rd.concat(v.rv).map(r=>r.n).join(", ")||"aucun")+"\n\nÀ faire :\n"+(v.todo.map(t=>"• "+t).join("\n")||"• Rien d’urgent.")+"\n\nChronologie :\n"+(S.log.slice(0,15).map(l=>"• "+l.t+" — "+l.x).join("\n")||"• Aucun événement.")};
+$("#prt").onclick=()=>window.print();
+$("#gosys").onclick=()=>runScan();
+function renderHome(v,hi,md,T){
+const C={ok:"var(--ok)",watch:"var(--warn)",bad:"var(--bad)",todo:"var(--mute)"}[v.level],W={ok:"PROTÉGÉ",watch:"À SURVEILLER",bad:"EN DANGER",todo:"À ANALYSER"}[v.level],P={ok:"Votre téléphone est en sécurité",watch:"Votre téléphone est partiellement protégé",bad:"Votre téléphone n’est pas en sécurité",todo:"Lancez l’analyse pour connaître votre protection"}[v.level];
+const p=v.pct==null?0:v.pct,g=v.level=="ok"?'<path d="M22 32l7 7 13-14"/>':'<path d="M32 22v14M32 43v1"/>';
+const last=S.lastScan?new Date(S.lastScan).toLocaleString("fr-FR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}):"jamais";
+$("#hero").innerHTML=`<svg viewBox="0 0 160 160" width="200" height="200" role="img" aria-label="Protection ${v.pct==null?"non évaluée":p+" pour cent"}"><circle cx="80" cy="80" r="70" fill="none" stroke="var(--line)" stroke-width="10"/><circle cx="80" cy="80" r="70" fill="none" stroke="${C}" stroke-width="10" stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="${440*(1-p/100)}" transform="rotate(-90 80 80)"/><g transform="translate(56 24) scale(.75)"><path d="M32 3 56 12v20c0 14-10 24-24 29C18 56 8 46 8 32V12Z" fill="${C}" fill-opacity=".18" stroke="${C}" stroke-width="3"/><g stroke="${C}" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">${g}</g></g><text x="80" y="118" text-anchor="middle" fill="currentColor" font-size="34" font-weight="800" font-family="Bricolage Grotesque,sans-serif">${v.pct==null?"–":p+" %"}</text><text x="80" y="136" text-anchor="middle" fill="var(--mute)" font-size="10">PROTECTION</text></svg><div class="h-t" style="color:${C}">${W}</div><div class="h-s">${P}</div><div class="h-s mute">Dernière analyse : ${last}</div><div class="h-p" style="color:${C}">● ${hi?hi+" menace(s) à traiter":v.level=="todo"?"Analyse non lancée":"Aucune menace active"}</div>`;
+const ph=!S.done?["À analyser","pill-w"]:v.miss.length?["À corriger","pill-w"]:["Actif","pill-b"],nt=!S.routers.length&&!S.devs.length?["Non renseigné","pill-g"]:(v.rd.length||v.rv.length||v.ud.length)?["À risque","pill-r"]:["Sécurisé","pill-ok"];
+$("#live").innerHTML=[["sys","Téléphone et applications",ph],["net","Réseau Wi-Fi et appareils",nt],["thr","Détection de menaces",["Actif","pill-b"]],["file","Analyseur de fichiers",["Prêt","pill-b"]]].map(r=>`<button class="rc" data-go="${r[0]}"><span class="ri">${sv(ICO[r[0]])}</span><span class="rn">${r[1]}</span><span class="pill ${r[2][1]}">${r[2][0]}</span></button>`).join("");
+const c1=hi?"var(--bad)":"var(--ok)",c2=md?"var(--warn)":"var(--ok)";
+$("#probs").innerHTML=!S.done?'<li class="mute">Lancez l’analyse complète pour voir les problèmes de votre téléphone.</li>':T.length?T.slice(0,5).map(t=>`<li><span class="dot ${t[0]?"high":"med"}"></span><div><b>${esc(t[1])}</b><div class="mute">${esc(t[2])}</div></div><span class="tag ${t[0]?"t-high":"t-med"}" style="margin-left:auto">${t[0]?"Critique":"Moyen"}</span></li>`).join("")+(T.length>5?`<li><button class="btn alt" data-go="thr">Voir les ${T.length} problèmes</button></li>`:""):'<li class="mute">Aucun problème détecté.</li>';
+$("#stats").innerHTML=`<div class="sc"><b style="color:${c1}">${hi}</b><span>Menaces à traiter</span><i style="color:${c1}">${hi?"Action requise":"Aucune action"}</i></div><div class="sc"><b style="color:${c2}">${md}</b><span>Points à vérifier</span><i style="color:${c2}">${md?"À surveiller":"Tout est clair"}</i></div>`;
+$("#recent").innerHTML=S.log.length?S.log.slice(0,3).map(l=>{const b=/inconnu|dangereu/i.test(l.x);return `<li><span class="ai ${b?"ai-r":"ai-b"}">${b?"!":"✓"}</span><div><b>${esc(l.x)}</b><div class="mute">${l.t}</div></div></li>`}).join(""):'<li class="mute">Aucune activité pour l’instant.</li>'}
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)show(g.dataset.go)});
+let scanning=false;
+async function runScan(){if(scanning)return;scanning=true;const b=$("#scanbtn");b.disabled=true;show("dash");for(const m of["Vérification du téléphone…","Vérification du réseau…","Vérification des applications…","Analyse des appareils…","Calcul du niveau de protection…"]){b.textContent=m;$("#scanmsg").textContent=m;await new Promise(r=>setTimeout(r,400))}S.done=true;S.lastScan=Date.now();const v=calc();logEv("Analyse complète : "+v.pct+" % de protection, "+v.todo.length+" problème(s)");$("#scanmsg").textContent="";b.disabled=false;b.textContent="LANCER L’ANALYSE COMPLÈTE";scanning=false;save()}
+$("#scanbtn").onclick=runScan;
+
+$("#th").value=S.theme=="light"?"light":"dark";applyTheme();
+$("#th").onchange=()=>{S.theme=$("#th").value;applyTheme();store()};
+$("#exp").onclick=async()=>{try{await navigator.clipboard.writeText(JSON.stringify(S));$("#setmsg").textContent="Données copiées."}catch(e){$("#setmsg").textContent="Copie impossible sur ce navigateur."}};
+$("#wipe").onclick=()=>{if(confirm("Effacer toutes les données de SENTRIX AI sur ce téléphone ?")){S={devs:[],routers:[],apps:[],chk:{},done:false,log:[],theme:"dark"};applyTheme();$("#th").value="auto";save()}};
+$("#f").onchange=async e=>{const f=e.target.files[0];if(!f)return;const out=$("#fout");out.innerHTML='<p class="mute">Analyse en cours…</p>';
+const buf=await f.arrayBuffer(),h=await crypto.subtle.digest("SHA-256",buf),hex=[...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,"0")).join("");
+const s=new Uint8Array(buf.slice(0,262144)),c=new Array(256).fill(0);s.forEach(b=>c[b]++);let H=0;c.forEach(n=>{if(n){const p=n/s.length;H-=p*Math.log2(p)}});
+const parts=f.name.toLowerCase().split("."),ext=parts.length>1?parts.pop():"";
+const risky=["exe","scr","bat","cmd","js","vbs","ps1","msi","apk","jar","com","dll"],doc=["pdf","doc","docx","xls","xlsx","jpg","png","txt"];
+const flags=[];let pts=0;
+if(risky.includes(ext)){flags.push("Type exécutable : ne l’ouvrez que si vous connaissez la source.");pts+=2}
+if(parts.length>0&&doc.includes(parts[parts.length-1])&&risky.includes(ext)){flags.push("Double extension trompeuse.");pts+=3}
+if(H>7.5&&s.length>2000){flags.push("Contenu très compressé ou chiffré (entropie élevée).");pts+=1}
+if(s[0]==0x4d&&s[1]==0x5a&&!["exe","dll","scr","com"].includes(ext)){flags.push("Signature d’un programme Windows cachée sous une autre extension.");pts+=3}
+const v=pts>=3?["high","Élevé"]:pts>=1?["med","Moyen"]:["low","Faible"];
+out.innerHTML=`<dl><dt>Nom</dt><dd>${f.name.replace(/[<>&]/g,"")}</dd><dt>Taille</dt><dd>${(f.size/1024).toFixed(1)} Ko</dd><dt>Empreinte SHA-256</dt><dd>${hex}</dd><dt>Entropie</dt><dd>${H.toFixed(2)} / 8</dd><dt>Risque</dt><dd><span class="tag t-${v[0]}">${v[1]}</span></dd><dt>Constats</dt><dd>${flags.length?flags.join("<br>"):"Aucun signe suspect dans ces contrôles de base."}</dd></dl><p class="mute">Contrôle de base seulement : ce n’est pas un antivirus. Comparez l’empreinte sur un service d’analyse en cas de doute.</p>`};
+let dp=null;addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e});
+if(matchMedia("(display-mode: standalone)").matches)$("#inst").hidden=true;
+$("#inst").onclick=()=>{if(dp){dp.prompt();dp=null}else $("#dlg").showModal()};
+$("#cl").onclick=()=>$("#dlg").close();
+const norm=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[’'`]/g," ").replace(/wi-fi/g,"wifi").replace(/\s+/g," ");
+const say=(t,me)=>{const d=document.createElement("div");d.className="msg"+(me?" me":"");d.textContent=t;$("#chat").append(d);$("#chat").scrollTop=1e9};
+async function phone(){const l=["Voici ce que ce téléphone montre à cette page :",navigator.onLine?"• Internet : connecté.":"• Internet : coupé."];const c=navigator.connection;if(c&&c.effectiveType)l.push("• Vitesse de connexion : "+({"4g":"bonne","3g":"moyenne","2g":"lente","slow-2g":"très lente"}[c.effectiveType]||c.effectiveType)+".");if(navigator.getBattery){try{const b=await navigator.getBattery();l.push("• Batterie : "+Math.round(b.level*100)+" %"+(b.charging?" (en charge)":"")+".")}catch(e){}}if(navigator.storage&&navigator.storage.estimate){try{const s=await navigator.storage.estimate();l.push("• Espace utilisé par ce site : "+((s.usage||0)/1048576).toFixed(1)+" Mo.")}catch(e){}}const u=navigator.userAgent;l.push("• Système : "+(/Android/.test(u)?"Android":/iPhone|iPad/.test(u)?"iPhone ou iPad":/Windows/.test(u)?"Windows":"autre")+", écran "+screen.width+"×"+screen.height+".");l.push("Une page web ne peut pas voir vos messages, vos appels, vos photos ni vos autres applications. C’est voulu : cela vous protège. Pour tout surveiller, il faut une vraie application installée avec votre permission.");return l.join("\n")}
+const KB=[
+[/en ce moment|se passe|resume|situation|en securite|protege|securite de mon/,()=>{const v=calc();return v.title+".\n"+(v.todo.length?"À faire : "+v.todo.slice(0,3).join(" "):"Rien d’urgent.")}],
+[/telephone|batterie|stockage|ecran/,phone],
+[/install/,()=>"Touchez « Installer l’app » en haut. Si rien ne s’ouvre, ouvrez la page dans Chrome (Android) ou Safari (iPhone), puis menu → Ajouter à l’écran d’accueil."],
+[/fichier|virus|sha|empreinte|entropie|suspect/,()=>"Allez dans l’onglet Fichiers et choisissez un fichier. L’app calcule son empreinte (sa carte d’identité unique), regarde son type et cherche des astuces de pirates, comme un faux « facture.pdf.exe ». Le fichier n’est jamais ouvert ni envoyé. C’est un contrôle de base, pas un antivirus."],
+[/inconnu|intrus|appareil/,()=>"Un appareil inconnu est un téléphone ou un ordinateur connecté à votre réseau que vous n’avez pas enregistré. Ce peut être un invité ou un voisin, mais aussi un intrus. Si vous ne le reconnaissez pas, bloquez-le dans l’onglet Réseau."],
+[/reseau|wifi|debit|port|internet/,()=>"Le réseau, c’est le chemin par lequel vos appareils parlent à internet. Chaque ligne est un échange avec un site. Le port est une porte numérique : la 443 est la porte normale des sites sécurisés."],
+[/rapport|pdf|imprim/,()=>"Dans l’onglet Rapports, touchez « Générer le rapport », puis « Imprimer / PDF » pour l’enregistrer ou le partager."],
+[/mot de passe|double|authentification|compte|proteger/,()=>"Utilisez un mot de passe long et différent pour chaque compte, et activez la double authentification : même si quelqu’un devine votre mot de passe, il lui faut aussi un code reçu sur votre téléphone."],
+[/\bia\b|intelligence|comment ca marche|simule/,()=>"Dans cette version démonstration, l’analyse suit des règles écrites à l’avance et les données sont simulées. Dans la version finale, une vraie IA lira vos vrais événements pour les expliquer."]];
+const KB2=[
+[["phishing","hameconnage","faux message","faux sms","lien suspect","arnaque"],"Le phishing (hameçonnage), c’est un faux message qui imite une banque, un opérateur ou un ami pour vous faire donner un mot de passe ou un code.\nSignes : urgence, fautes, lien étrange, demande de code.\nQue faire : ne touchez pas au lien, ne répondez pas, vérifiez en appelant le vrai service, puis supprimez le message."],
+[["mot de passe fort","bon mot de passe","creer un mot de passe","mdp"],"Un bon mot de passe est long (12 caractères ou plus) et différent pour chaque compte. Une phrase de trois ou quatre mots sans lien entre eux est facile à retenir et difficile à deviner. N’utilisez jamais votre date de naissance. Un gestionnaire de mots de passe aide à tous les garder."],
+[["double authentification","2fa","code sms","verification en deux"],"La double authentification ajoute une deuxième preuve : un code reçu sur votre téléphone ou dans une application. Même si un pirate connaît votre mot de passe, il ne peut pas entrer sans ce code. Activez-la sur WhatsApp, Facebook, Gmail et vos comptes d’argent. Ne donnez ce code à personne."],
+[["vpn"],"Un VPN cache votre trafic dans un tunnel chiffré. C’est utile sur un Wi-Fi public : personne autour ne peut lire ce que vous envoyez. Il ne protège pas des virus ni du phishing. Choisissez un service connu et évitez les VPN gratuits inconnus."],
+[["virus","malware","logiciel malveillant","cheval de troie","trojan","spyware","logiciel espion"],"Un virus ou logiciel malveillant est un programme qui agit contre vous : espionner, voler des mots de passe ou bloquer l’appareil.\nSignes : téléphone très lent, batterie qui chauffe, publicités partout, applications inconnues.\nQue faire : désinstallez les applications suspectes, analysez avec un antivirus connu, changez vos mots de passe et, en dernier recours, réinitialisez le téléphone."],
+[["rancongiciel","ransomware","rancon"],"Un rançongiciel bloque vos fichiers et demande de l’argent pour les rendre. Déconnectez l’appareil du réseau tout de suite et ne payez pas : rien ne garantit la récupération. Restaurez vos fichiers depuis une sauvegarde. La meilleure protection est de faire des sauvegardes régulières, gardées hors de l’appareil."],
+[["sauvegarde","backup","sauvegarder"],"Gardez une copie de vos fichiers importants à deux endroits différents, par exemple le cloud et une clé ou un disque. Une sauvegarde vous sauve après un vol, une panne ou un virus. Vérifiez de temps en temps que vous pouvez bien rouvrir les copies."],
+[["wifi public","wifi gratuit","wifi de l hotel","wifi du cafe"],"Un Wi-Fi public (café, hôtel, gare) peut être espionné ou faux. Évitez d’y payer ou d’ouvrir vos comptes importants. Préférez vos données mobiles ou un VPN, et vérifiez le nom exact du réseau auprès du personnel."],
+[["securiser mon wifi","securiser le wifi","securiser wifi","proteger mon wifi","proteger le wifi","mot de passe wifi","wpa","wps","routeur","modem"],"Pour sécuriser votre Wi-Fi :\n1) changez le mot de passe d’administration de la box,\n2) choisissez WPA2 ou WPA3 avec un mot de passe Wi-Fi long,\n3) désactivez le WPS,\n4) mettez la box à jour,\n5) créez un réseau invité pour les visiteurs,\n6) regardez de temps en temps la liste des appareils connectés."],
+[["utilise mon wifi","vole mon wifi","voler mon wifi","wifi lent","connexion lente","internet lent"],"Si quelqu’un utilise votre Wi-Fi ou s’il devient lent : ouvrez la liste des appareils connectés (dans la box ou dans l’onglet Réseau), repérez ceux que vous ne reconnaissez pas, puis changez le mot de passe Wi-Fi. Tous les appareils seront déconnectés et seuls ceux à qui vous donnerez le nouveau mot de passe reviendront."],
+[["telephone vole","telephone perdu","perdu mon telephone","vol de telephone","on m a vole"],"Téléphone volé ou perdu :\n1) localisez-le avec « Localiser mon appareil » (Android) ou « Localiser » (iPhone),\n2) verrouillez-le à distance,\n3) appelez votre opérateur pour bloquer la carte SIM,\n4) changez les mots de passe de vos comptes importants (e-mail, WhatsApp, mobile money),\n5) déclarez le vol à la police si besoin."],
+[["compte pirate","piratage","pirate mon","hacke","vol de compte","compte vole"],"Compte piraté :\n1) changez tout de suite le mot de passe depuis un appareil sûr,\n2) activez la double authentification,\n3) déconnectez les autres appareils dans les paramètres du compte,\n4) prévenez vos contacts de ne pas cliquer sur les liens envoyés,\n5) vérifiez l’e-mail de récupération et les règles de transfert."],
+[["mise a jour","mettre a jour","update"],"Les mises à jour corrigent des failles que les pirates connaissent déjà. Les repousser laisse la porte ouverte. Activez les mises à jour automatiques du téléphone, des applications et de la box."],
+[["antivirus"],"Un antivirus aide à repérer les programmes dangereux, mais il ne remplace pas la prudence. Prenez-en un connu depuis la boutique officielle, un seul à la fois, et gardez-le à jour. Installez vos applications uniquement depuis Google Play ou l’App Store."],
+[["cookies","traceur","vie privee","donnees personnelles","confidentialite","permissions"],"Les cookies et traceurs suivent ce que vous faites en ligne pour la publicité. Refusez ceux qui ne sont pas nécessaires. Vérifiez les permissions des applications (micro, caméra, position) et retirez celles dont elles n’ont pas besoin."],
+[["https","cadenas","site securise"],"Le cadenas ou « https » signifie que l’échange avec le site est chiffré. Il ne prouve pas que le site est honnête : un faux site peut l’avoir aussi. Vérifiez toujours l’adresse écrite en haut avant de donner un mot de passe."],
+[["bluetooth"],"Désactivez le Bluetooth quand vous ne l’utilisez pas, refusez les demandes d’appairage inconnues et gardez le téléphone à jour. Cela limite les attaques de proximité."],
+[["qr code","scanner un qr"],"Un QR code cache un lien. Ne scannez pas ceux collés par-dessus d’autres, ni ceux reçus d’un inconnu. Regardez l’adresse qui s’affiche avant d’ouvrir et ne saisissez jamais de mot de passe après un scan inattendu."],
+[["ddos","deni de service","saturation"],"Une attaque par saturation envoie un énorme nombre de requêtes pour qu’un site ou un réseau ne réponde plus. On s’en protège en limitant le nombre de requêtes par adresse, en plaçant un service de protection devant le site et en surveillant les pics, comme le fait SENTRIX."],
+[["pare feu","pare-feu","parefeu","firewall"],"Un pare-feu est un portier : il laisse passer le trafic autorisé et bloque le reste. Il est déjà intégré à la box et au téléphone. Gardez-le activé."],
+[["mobile money","orange money","mtn money","code pin","code otp","transfert d argent"],"Ne donnez jamais votre code secret ni le code reçu par SMS, même à quelqu’un qui dit être de l’opérateur ou de la banque : les vrais agents ne le demandent pas. Méfiez-vous des faux gains, des « erreurs de transfert » à rembourser et des appels pressants. Vérifiez toujours en appelant le service officiel."],
+[["ingenierie sociale","faux appel","faux support","manipulation"],"L’ingénierie sociale consiste à tromper une personne, pas une machine : fausse urgence, faux chef, faux technicien. La règle : prenez le temps, vérifiez par un autre canal et ne donnez jamais mots de passe ni codes."],
+[["cybersecurite","securite informatique"],"La cybersécurité, c’est protéger vos appareils, vos comptes et vos données contre les pirates, les virus et les erreurs. Elle repose sur trois choses : des outils (mises à jour, antivirus), de bonnes habitudes (mots de passe, prudence) et une surveillance, comme celle de SENTRIX AI."],
+[["adresse ip","adresse mac","dns"],"L’adresse IP est le numéro de votre appareil sur un réseau, comme un numéro de maison. L’adresse MAC est le numéro de série de sa carte réseau, il ne change pas. Le DNS est l’annuaire qui transforme le nom d’un site en adresse IP."],
+[["chiffrement","cryptage","crypte"],"Le chiffrement transforme un message en code illisible sans la clé. C’est ce qui protège WhatsApp, les sites en https et un téléphone verrouillé. Sans la clé, même un voleur ne peut pas lire vos données."],
+[["qui es tu","qui t a cree","qui t a fait","qui a cree","ton nom","tu es qui"],"Je suis l’assistant de SENTRIX AI, conçu par Mamadou Samba Baldé. Je réponds avec des règles intégrées, en mots simples, sur la sécurité de vos appareils et de votre Wi-Fi."],
+[["bonjour","salut","bonsoir","coucou","hello","merci"],"Avec plaisir ! Posez-moi une question sur la sécurité de votre téléphone ou de votre Wi-Fi, ou sur ce que montre l’app."],
+[["que peux tu","que sais tu","tu peux faire","aide moi","a quoi tu sers","help"],"Je peux expliquer : les alertes et le niveau de sécurité de l’app, les appareils et le réseau, l’analyse de fichiers, et les sujets courants de cybersécurité : phishing, mots de passe, double authentification, Wi-Fi, VPN, virus, rançongiciels, sauvegardes, vol de téléphone, compte piraté, mobile money."]];
+const FALLBACK="Je n’ai pas encore la réponse à cette question dans cette version. Je réponds aux sujets courants de cybersécurité (phishing, mots de passe, Wi-Fi, VPN, virus, sauvegardes, vol de téléphone…) et à ce que montre l’app. Reformulez avec d’autres mots, ou choisissez une question ci-dessus.";
+async function ask(q){q=q.trim();if(!q)return;say(q,1);const n=norm(q);let r,best=0;
+for(const [keys,a] of KB2){let sc=0;keys.forEach(k=>{if(n.includes(k))sc+=k.length});if(sc>best){best=sc;r=a}}
+if(best<3)r=null;
+if(!r)for(const [re,f] of KB)if(re.test(n)){r=await f();break}
+if(!r&&window.sxAI){try{r=await window.sxAI(q)}catch(e){}}
+say(r||FALLBACK)}
+["Mon téléphone est-il en sécurité ?","C’est quoi un appareil inconnu ?","Explique le réseau","Mon téléphone","Comment analyser un fichier ?","Comment protéger mes comptes ?","Comment sécuriser mon Wi-Fi ?","C’est quoi le phishing ?"].forEach(t=>{const b=document.createElement("button");b.className="btn alt";b.textContent=t;b.onclick=()=>ask(t);$("#chips").append(b)});
+$("#send").onclick=()=>{ask($("#q").value);$("#q").value=""};
+$("#q").onkeydown=e=>{if(e.key=="Enter"){$("#send").click()}};
+say("Bonjour ! Je suis l’assistant SENTRIX. Je vous explique en mots simples ce qui se passe. Choisissez une question ou écrivez la vôtre.");
+render();
+phone().then(t=>{$("#devinfo").textContent=t.replace("Voici ce que ce téléphone montre à cette page :","Ce que ce téléphone montre à l’application :")});
+</script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,signInAnonymously}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const st=document.getElementById("cloud");
+try{
+const app=initializeApp({apiKey:"AIzaSyCR_ScJoF1RA_sEMeuAF7_IwZdhiyRGVEQ",authDomain:"sentrix-ai-15cdd.firebaseapp.com",projectId:"sentrix-ai-15cdd",storageBucket:"sentrix-ai-15cdd.firebasestorage.app",messagingSenderId:"858905635361",appId:"1:858905635361:web:03a75316b7fe7df6649160"});
+const db=getFirestore(app);let id;
+try{id=(await signInAnonymously(getAuth(app))).user.uid}catch(e){id=localStorage.getItem("sx-id");if(!id){id=crypto.randomUUID();localStorage.setItem("sx-id",id)}}
+const ref=doc(db,"users",id),snap=await getDoc(ref);
+if(snap.exists()){const d=snap.data(),r=d.s?JSON.parse(d.s):null;if(r&&(r.ts||0)>(S.ts||0)){S=Object.assign({devs:[],routers:[],apps:[],chk:{},done:false,log:[],theme:"dark"},r);applyTheme();$("#th").value=S.theme=="light"?"light":"dark";render()}}
+let t;window.sxPush=()=>{clearTimeout(t);t=setTimeout(()=>setDoc(ref,{s:JSON.stringify(S),ts:S.ts||Date.now()}).catch(()=>{}),800)};
+window.sxPush();
+st.textContent="Sauvegarde en ligne : active"
+}catch(e){st.textContent="Sauvegarde en ligne : indisponible ("+(e.code||"erreur")+")"}
+</script>
+<script>if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));</script>
+</body>
+</html>
